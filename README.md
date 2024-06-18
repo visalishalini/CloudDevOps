@@ -11,7 +11,7 @@ Step6:  Cloudfront configuration with domain name
 Step7: Web Browser Access using Cloudfront domain name endpoint and static website hosting bucket endpoints
 Cloudfront Distribution Domain Name: d2hhk65baiidm8.cloudfront.net
 
-Udacity Module1- Resubmission on 18June 
+# Udacity Module1- Resubmission on 18June 
 Steps for which screenshot has been shared
 Step1: S3 bucket is created
 Step2: The static website related files & folders have been uploaded to the bucket
