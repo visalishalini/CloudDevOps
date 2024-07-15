@@ -8,6 +8,8 @@ Create CloudFormation Stack for Udagram Infrastructure:
 
 ./deploy-udagram.sh
 
+LoadBalancer URL: http://myloadbalancer-781894250.us-east-1.elb.amazonaws.com/
+Message Displayed: it works! Udagram, Udacity
 
 
 
