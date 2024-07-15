@@ -108,7 +108,11 @@ Resources:
         UserData:
           Fn::Base64: |
             #!/bin/bash
-            apt-get update
+            apt-get update -y
+            apt-get install -y apache2
+            systemctl start apache2
+            systemctl enable apache2
+            echo "it works! Udagram, Udacity" > /var/www/html/index.html
 
   AutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
