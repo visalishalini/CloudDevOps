@@ -1,0 +1,62 @@
+Parameters:
+  VpcId:
+    Type: String
+  PublicSubnets:
+    Type: CommaDelimitedList
+
+Resources:
+  SecurityGroupLoadBalancer:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTP
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: myLoadBalancer
+      Subnets: !Ref PublicSubnets
+      SecurityGroups:
+      - !Ref SecurityGroupLoadBalancer
+
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: myTargetGroup
+      VpcId: !Ref VpcId
+      Port: 80
+      Protocol: HTTP
+      TargetType: instance
+      HealthCheckProtocol: HTTP
+      HealthCheckPort: 80
+      HealthCheckPath: /
+      Matcher:
+        HttpCode: 200-399
+
+  Listener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+      - Type: forward
+        TargetGroupArn: !Ref TargetGroup
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 80
+      Protocol: HTTP
+
+Outputs:
+  LoadBalancerDNSName:
+    Description: DNS Name of the LoadBalancer
+    Value: !Join ['', ['http://', !GetAtt LoadBalancer.DNSName]]
+    Export:
+      Name: LoadBalancerDNSName
+
+  TargetGroupARN:
+    Description: Target Group ARN
+    Value: !Ref TargetGroup
+    Export:
+      Name: TargetGroupARN

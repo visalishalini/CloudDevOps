@@ -1,0 +1,46 @@
+Parameters:
+  VpcId:
+    Type: String
+    Description: The ID of the VPC
+
+Resources:
+  SecurityGroupLoadBalancer:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTP traffic from anywhere
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+      - IpProtocol: -1
+        CidrIp: 0.0.0.0/0
+
+  SecurityGroupEC2:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTP traffic from Load Balancer and unrestricted outbound access
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        SourceSecurityGroupId: !Ref SecurityGroupLoadBalancer
+      SecurityGroupEgress:
+      - IpProtocol: -1
+        CidrIp: 0.0.0.0/0
+
+Outputs:
+  LoadBalancerSecurityGroup:
+    Description: Security Group ID for the Load Balancer
+    Value: !Ref SecurityGroupLoadBalancer
+    Export:
+      Name: LoadBalancerSecurityGroup
+
+  EC2SecurityGroup:
+    Description: Security Group ID for the EC2 instances
+    Value: !Ref SecurityGroupEC2
+    Export:
+      Name: EC2SecurityGroup
