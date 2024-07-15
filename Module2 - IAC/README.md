@@ -13,6 +13,7 @@ Completed Steps in Brief:
 
 Output: 
 Target Group ARN: arn:aws:elasticloadbalancing:us-east-1:387581210505:targetgroup/myTargetGroup/8dc8b3d9f5845b65
+
 Load Balancer DNS: http://myLoadBalancer-651537923.us-east-1.elb.amazonaws.com
 
 4. Udagram : Create ASG Instances
